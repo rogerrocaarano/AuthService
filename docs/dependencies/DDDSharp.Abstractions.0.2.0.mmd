@@ -1,0 +1,90 @@
+classDiagram
+    direction LR
+    namespace Domain {
+        class IValueObject
+        class IAuditable
+        class Entity
+        class AggregateRoot
+        class DomainEvent
+    }
+    namespace Application {
+        class IEventPublisher
+        class IRepository~AggregateRoot~
+        class IUnitOfWork
+        class ICommand
+        class IQuery
+    }
+    class Entity {
+        <<Abstract>>
+        #Id: Guid
+        +Id(): Guid
+    }
+    Entity *-- IValueObject
+
+    class IAuditable {
+        <<Interface>>
+        +CreatedAt(): DateTime
+        +ModifiedAt(): DateTime
+    }
+
+    class AggregateRoot {
+        <<Abstract>>
+        #_domainEvents: DomainEvent[0..*]
+        +DomainEvents(): DomainEvent[0..*]
+        #AddDomainEvent(event: DomainEvent)
+        +ClearDomainEvents()
+    }
+    AggregateRoot --|> Entity
+    AggregateRoot --|> IAuditable
+    AggregateRoot ..> DomainEvent
+    AggregateRoot -- IRepository~AggregateRoot~: saves to
+
+
+    class IValueObject~IValueObject~ {
+        <<Interface>>
+        +Equals(other: IValueObject): Boolean
+        +GetHashCode(): Int
+    }
+
+    class IEventPublisher {
+        <<Interface>>
+        +PublishAllAsync(events: DomainEvent[1..*])
+    }
+    IEventPublisher ..> DomainEvent
+
+    class DomainEvent {
+        <<Abstract, inmutable>>
+        #EventId: Guid
+        #AggregateId: Guid
+        #OccurredOn: DateTime
+        +EventId(): Guid
+        +OccurredOn(): DateTime
+}
+
+    class IRepository~AggregateRoot~ {
+        <<Interface, Repository>>
+        GetByIdAsync(id: Guid): AggregateRoot
+        AddAsync(aggregate: AggregateRoot)
+        UpdateAsync(aggregate: AggregateRoot)
+        RemoveAsync(aggregate: AggregateRoot)
+    }
+
+    class IUnitOfWork {
+        <<Interface, Service>>
+        +CommitAsync(cancellationToken: CancellationToken): Int
+    }
+    IUnitOfWork o-- IRepository~AggregateRoot~: Manages
+
+    class ICommand {
+        <<Interface, Command>>
+        Id(): Guid
+        CalledAt(): DateTime
+        Validate()
+    }
+
+    class IQuery~TResult~ {
+        <<Interface, Query>>
+        Id(): Guid
+        CalledAt(): DateTime
+        Validate()
+    }
