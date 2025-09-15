@@ -1,0 +1,76 @@
+classDiagram
+    direction LR
+    class Identity {
+        <<AggregateRoot, Entity>>
+        %% Attributes
+        -Credentials: Credential[]
+        -Roles: Role[]
+        -Claims: Claim[]
+        -isActive: boolean
+        %% Public getters
+        +Credentials(): Credential[]
+        +Roles(): Role[]
+        +Claims(): Claim[]
+        +IsActive(): boolean
+        %% Methods
+        +AddCredential(credential: Credential)
+        +RemoveCredential(credential: Credential)
+        +ValidateCredential(credential: Credential): boolean
+        +AddRole(role: Role)
+        +RemoveRole(role: Role)
+        +AddClaim(claim: Claim)
+        +RemoveClaim(claim: Claim)
+        +Activate()
+        +Deactivate()
+    }
+    Identity "1" *-- "1..*" Credential
+    Identity "1" *-- "0..*" Role
+    Identity "1" *-- "0..*" Claim
+    Identity "1" -- "0..*" Session : has
+
+    class Credential {
+        <<IValueObject, inmutable>>
+        Type: string
+        Identifier: string
+        SecretHash: string
+        Salt: string
+    }
+
+    class Claim {
+        <<IValueObject, inmutable>>
+        Type: string
+        Value: string
+    }
+
+    class Role {
+        <<IValueObject, inmutable>>
+        Name: string
+    }
+
+    class Session {
+        <<AggregateRoot, Entity>>
+        %% Attributes
+        -_ownerId: Guid
+        -_expiresAt: DateTime
+        -_revokedAt: DateTime
+        %% Public getters
+        +OwnerId(): Guid
+        +ExpiresAt(): DateTime
+        +RevokedAt(): DateTime
+        %% Methods
+        +IsValid(): boolean
+        +Revoke()
+    }
+
+    class IIdentityRepository {
+        <<Interface, IRepository>>
+        +GetEntityWithRolesAsync(identityId: Guid, cancellationToken: CancellationToken): Identity
+    }
+    IIdentityRepository ..> Identity
+
+    class ISessionsRepository {
+        <<Interface, IRepository>>
+        +GetAllSessionsForIdentityAsync(identityId: Guid, cancellationToken: CancellationToken): Session[]
+    }
+    ISessionsRepository ..> Session
+    
