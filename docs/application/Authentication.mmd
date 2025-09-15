@@ -1,0 +1,56 @@
+classDiagram
+    namespace Commands {
+        class CreateSessionCommand
+        class RevokeSessionCommand
+        class RevokeAllSessionsForIdentityCommand
+    }
+
+    namespace Queries {
+        class GetAllSessionsForIdentityQuery
+    }
+
+    class AuthenticationService {
+        -_identityRepository: IIdentityRepository ~readOnly~
+        -_sessionRepository: ISessionRepository ~readOnly~
+        -_unitOfWork: IUnitOfWork ~readOnly~
+        -_publisher: IDomainEventPublisher ~readOnly~
+    }
+    AuthenticationService --|> IAuthenticationService
+
+    class IAuthenticationService {
+        <<Interface>>
+        +CreateSessionAsync(command: CreateSessionCommand, cancellationToken: CancellationToken): Session
+        +RevokeSessionAsync(command: RevokeSessionCommand, cancellationToken: CancellationToken)
+        +RevokeAllSessionsForIdentityAsync(command: RevokeAllSessionsForIdentityCommand, cancellationToken: CancellationToken)
+        +GetAllSessionsForIdentityAsync(command: GetAllSessionsForIdentityQuery, cancellationToken: CancellationToken): Session[]
+    }
+    IAuthenticationService ..> CreateSessionCommand
+    IAuthenticationService ..> RevokeSessionCommand
+    IAuthenticationService ..> RevokeAllSessionsForIdentityCommand
+    IAuthenticationService ..> GetAllSessionsForIdentityQuery
+
+    class CreateSessionCommand {
+        <<ICommand>>
+        +Credential: Credential
+    }
+
+    class RevokeSessionCommand {
+        <<ICommand>>
+        +SessionId: Guid
+        +CallerIdentityId: Guid
+        +CallerSessionId: Guid
+    }
+
+    class RevokeAllSessionsForIdentityCommand {
+        <<ICommand>>
+        +IdentityId: Guid
+        +CallerIdentityId: Guid
+        +CallerSessionId: Guid
+    }
+
+    class GetAllSessionsForIdentityQuery {
+        <<IQuery>>
+        +IdentityId: Guid
+        +CallerIdentityId: Guid
+        +CallerSessionId: Guid
+    }

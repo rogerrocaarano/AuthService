@@ -1,0 +1,76 @@
+classDiagram
+    direction TB
+    namespace Queries {
+        class GetIdentityByIdQuery
+    }
+    namespace Commands {
+        class RegisterIdentityCommand
+        class ActivateIdentityCommand
+        class DeactivateIdentityCommand
+        class DeleteIdentityCommand
+        class AddCredentialCommand
+        class RemoveCredentialCommand
+    }
+    class IdentityService {
+        -_identityRepository: IIdentityRepository ~readOnly~
+        -_unitOfWork: IUnitOfWork ~readOnly~
+        -_publisher: IDomainEventPublisher ~readOnly~
+    }
+    IdentityService --|> IIdentityService
+    class IIdentityService {
+        <<Interface>>
+        +GetIdentityByIdAsync(command: GetIdentityByIdQuery, cancellationToken: CancellationToken): Identity
+        +RegisterAsync(command: RegisterIdentityCommand, cancellationToken: CancellationToken): Identity
+        +ActivateIdentityAsync(command: ActivateIdentityCommand, cancellationToken: CancellationToken): Identity
+        +DeactivateIdentityAsync(command: DeactivateIdentityCommand, cancellationToken: CancellationToken): Identity
+        +DeleteIdentityAsync(command: DeleteIdentityCommand, cancellationToken: CancellationToken)
+        +AddCredentialAsync(command: AddCredentialCommand, cancellationToken: CancellationToken): Identity
+        +RemoveCredentialAsync(command: RemoveCredentialCommand, cancellationToken: CancellationToken): Identity
+    }
+
+    class GetIdentityByIdQuery {
+        <<IQuery>>
+        +IdentityId: Guid
+        +CallerIdentityId: Guid
+        +CallerSessionId: Guid
+    }
+    IIdentityService ..> GetIdentityByIdQuery
+
+    class RegisterIdentityCommand {
+        <<ICommand>>
+        +Credential: Credential
+        +Roles: Role[]
+    }
+    IIdentityService ..> RegisterIdentityCommand
+
+    class ActivateIdentityCommand {
+        <<ICommand>>
+        +IdentityId: Guid
+    }
+    IIdentityService ..> ActivateIdentityCommand
+
+    class DeactivateIdentityCommand {
+        <<ICommand>>
+        +IdentityId: Guid
+    }
+    IIdentityService ..> DeactivateIdentityCommand
+
+    class DeleteIdentityCommand {
+        <<ICommand>>
+        +IdentityId: Guid
+    }
+    IIdentityService ..> DeleteIdentityCommand
+
+    class AddCredentialCommand {
+        <<ICommand>>
+        +IdentityId: Guid
+        +Credential: Credential
+    }
+    IIdentityService ..> AddCredentialCommand
+
+    class RemoveCredentialCommand {
+        <<ICommand>>
+        +IdentityId: Guid
+        +Credential: Credential
+    }
+    IIdentityService ..> RemoveCredentialCommand

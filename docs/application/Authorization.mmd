@@ -1,0 +1,48 @@
+classDiagram
+    namespace Commands {
+        class AssignRoleCommand
+        class RevokeRoleCommand
+        class AssignClaimsCommand
+    }
+
+    class AuthorizationService {
+        -_identityRepository: IIdentityRepository ~readOnly~
+        -_sessionRepository: ISessionRepository ~readOnly~
+        -_unitOfWork: IUnitOfWork ~readOnly~
+        -_publisher: IDomainEventPublisher ~readOnly~
+    }
+    AuthorizationService --|> IAuthorizationService
+
+    class IAuthorizationService {
+        <<Interface>>
+        +AssignRoleToIdentity(command: AssignRoleCommand, cancellationToken: CancellationToken): Identity
+        +RevokeRoleFromIdentity(command: RevokeRoleCommand, cancellationToken: CancellationToken): Identity
+        +AssignClaimsToIdentity(command: AssignClaimsCommand, cancellationToken: CancellationToken): Identity
+    }
+    IAuthorizationService ..> AssignRoleCommand
+    IAuthorizationService ..> RevokeRoleCommand
+    IAuthorizationService ..> AssignClaimsCommand
+
+    class AssignRoleCommand {
+        <<ICommand>>
+        +IdentityId: Guid
+        +CallerIdentityId: Guid
+        +CallerSessionId: Guid
+        +Role: Role
+    }
+
+    class RevokeRoleCommand {
+        <<ICommand>>
+        +IdentityId: Guid
+        +CallerIdentityId: Guid
+        +CallerSessionId: Guid
+        +Role: Role
+    }
+
+    class AssignClaimsCommand {
+        <<ICommand>>
+        +IdentityId: Guid
+        +CallerIdentityId: Guid
+        +CallerSessionId: Guid
+        +Claims: Claim[]
+    }
