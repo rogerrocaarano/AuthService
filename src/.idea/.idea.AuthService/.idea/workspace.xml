@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d05cc698-4941-4c6b-a71b-7b26d85f20e1" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../docs/domain/domain.mmd" beforeDir="false" afterPath="$PROJECT_DIR$/../docs/domain/domain.mmd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.AuthService/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.AuthService/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AuthService.sln" beforeDir="false" afterPath="$PROJECT_DIR$/AuthService.sln" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/Domain.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Domain/Domain.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/Identities/Identity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Domain/Identities/Identity.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Domain/Aggregates/Identity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Domain/Aggregates/Identity.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Domain/Aggregates/Session.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Domain/Aggregates/Session.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +61,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1757979184148</updated>
-      <workItem from="1757979186425" duration="5893000" />
+      <workItem from="1757979186425" duration="11318000" />
     </task>
     <servers />
   </component>
