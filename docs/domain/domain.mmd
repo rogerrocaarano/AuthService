@@ -27,6 +27,32 @@ classDiagram
     Identity "1" *-- "0..*" Role
     Identity "1" *-- "0..*" Claim
     Identity "1" -- "0..*" Session : has
+    Identity ..> ModifiedCredentialsEvent: emits
+    Identity ..> ModifiedRolesEvent: emits
+    Identity ..> ModifiedClaimsEvent: emits
+    Identity ..> ToggledIdentityActivationEvent: emits
+
+    class ModifiedCredentialsEvent {
+        <<DomainEvent>>
+        CredentialType: string
+        CredentialIdentifier: string
+    }
+
+    class ModifiedRolesEvent {
+        <<DomainEvent>>
+        RoleName: string
+    }
+
+    class ModifiedClaimsEvent {
+        <<DomainEvent>>
+        ClaimType: string
+        ClaimValue: string
+    }
+
+    class ToggledIdentityActivationEvent {
+        <<DomainEvent>>
+        NewStatus: boolean
+    }
 
     class Credential {
         <<IValueObject, inmutable>>

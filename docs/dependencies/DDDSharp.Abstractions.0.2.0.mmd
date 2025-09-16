@@ -57,9 +57,12 @@ classDiagram
         #EventId: Guid
         #AggregateId: Guid
         #OccurredOn: DateTime
+        #Action: String
         +EventId(): Guid
+        +AggregateId(): Guid
         +OccurredOn(): DateTime
-}
+        +Action(): String
+    }
 
     class IRepository~AggregateRoot~ {
         <<Interface, Repository>>
