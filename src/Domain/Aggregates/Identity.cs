@@ -1,9 +1,8 @@
 using DDDSharp.Abstractions.Domain;
-using Domain.ValueObjects;
-using Domain.Events;
 using Domain.Events.Identity;
+using Domain.ValueObjects;
 
-namespace Domain.Identities;
+namespace Domain.Aggregates;
 
 public class Identity : AggregateRoot
 {

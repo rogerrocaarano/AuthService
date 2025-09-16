@@ -1,5 +1,5 @@
 using DDDSharp.Abstractions.Application;
-using Domain.Identities;
+using Domain.Aggregates;
 
 namespace Domain.Repositories;
 

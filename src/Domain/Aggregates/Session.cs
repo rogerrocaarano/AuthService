@@ -1,6 +1,6 @@
 using DDDSharp.Abstractions.Domain;
 
-namespace Domain.Identities;
+namespace Domain.Aggregates;
 
 public class Session : AggregateRoot
 {
