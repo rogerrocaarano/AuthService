@@ -31,8 +31,15 @@ classDiagram
     Identity ..> ModifiedRolesEvent: emits
     Identity ..> ModifiedClaimsEvent: emits
     Identity ..> ToggledIdentityActivationEvent: emits
+    Identity ..> IdentityCreatedEvent: emits
 
     class ModifiedCredentialsEvent {
+        <<DomainEvent>>
+        CredentialType: string
+        CredentialIdentifier: string
+    }
+
+    class IdentityCreatedEvent {
         <<DomainEvent>>
         CredentialType: string
         CredentialIdentifier: string
@@ -86,6 +93,18 @@ classDiagram
         %% Methods
         +IsValid(): boolean
         +Revoke()
+    }
+
+    class NewSessionEvent {
+        <<DomainEvent>>
+        OwnerId: Guid
+        ExpiresAt: DateTime
+    }
+
+    class SessionRevokedEvent {
+        <<DomainEvent>>
+        OwnerId: Guid
+        RevokedAt: DateTime
     }
 
     class IIdentityRepository {

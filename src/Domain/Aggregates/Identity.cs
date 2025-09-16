@@ -1,5 +1,6 @@
 using DDDSharp.Abstractions.Domain;
 using Domain.Events.Identity;
+using Domain.Events.Session;
 using Domain.ValueObjects;
 
 namespace Domain.Aggregates;
@@ -15,18 +16,44 @@ public class Identity : AggregateRoot
     public IReadOnlyCollection<Role> Roles() => _roles.AsReadOnly();
     public IReadOnlyCollection<Claim> Claims() => _claims.AsReadOnly();
     public bool IsActive() => _isActive;
-
-    public Identity(IEnumerable<Credential> credentials, IEnumerable<Role>? roles = null, IEnumerable<Claim>? claims = null, bool isActive = true)
+    
+    public Identity(
+        // for base constructor
+        Guid id,
+        DateTime createdAt, 
+        DateTime modifiedAt,
+        // for class attributes
+        IEnumerable<Credential> credentials, 
+        IEnumerable<Role>? roles = null, 
+        IEnumerable<Claim>? claims = null,
+        bool isActive = true) 
+        : base(id, createdAt, modifiedAt)
     {
         ArgumentNullException.ThrowIfNull(credentials);
         var enumerable = credentials.ToList();
-        if (enumerable.Count == 0) 
+        if (enumerable.Count == 0)
             throw new ArgumentException("At least one credential is required.", nameof(credentials));
         
         _credentials.AddRange(enumerable);
         if (roles != null) _roles.AddRange(roles);
         if (claims != null) _claims.AddRange(claims);
         _isActive = isActive;
+    }
+
+    public Identity(
+        Credential credentials, 
+        IEnumerable<Role>? roles = null, 
+        IEnumerable<Claim>? claims = null,
+        bool isActive = true)
+    : base()
+    {
+        ArgumentNullException.ThrowIfNull(credentials);
+        _credentials.Add(credentials);
+        if (roles != null) _roles.AddRange(roles);
+        if (claims != null) _claims.AddRange(claims);
+        _isActive = isActive;
+
+        AddDomainEvent(new IdentityCreatedEvent(Id, credentials.Type, credentials.Identifier, "IdentityCreated"));
     }
 
     public void AddCredential(Credential credential)
