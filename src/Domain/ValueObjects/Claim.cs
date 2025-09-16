@@ -9,8 +9,8 @@ public sealed class Claim : IValueObject
 
     public Claim(string type, string value)
     {
-        Type = type ?? throw new ArgumentNullException(nameof(type));
-        Value = value ?? throw new ArgumentNullException(nameof(value));
+        Type = !string.IsNullOrWhiteSpace(type) ? type : throw new ArgumentNullException(nameof(type));
+        Value = !string.IsNullOrWhiteSpace(value) ? value : throw new ArgumentNullException(nameof(value));
     }
 
     public override bool Equals(object? obj)

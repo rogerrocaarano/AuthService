@@ -8,7 +8,7 @@ public sealed class Role : IValueObject
 
     public Role(string name)
     {
-        Name = name ?? throw new ArgumentNullException(nameof(name));
+        Name = !string.IsNullOrWhiteSpace(name) ? name : throw new ArgumentException("Name cannot be null or whitespace.", nameof(name));
     }
 
     public override bool Equals(object? obj)

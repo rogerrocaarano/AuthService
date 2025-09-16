@@ -11,8 +11,8 @@ public sealed class Credential : IValueObject
 
     public Credential(string type, string identifier, string secretHash, string salt)
     {
-        Type = type ?? throw new ArgumentNullException(nameof(type));
-        Identifier = identifier ?? throw new ArgumentNullException(nameof(identifier));
+        Type = string.IsNullOrWhiteSpace(type) ? throw new ArgumentNullException(nameof(type)) : type;
+        Identifier = string.IsNullOrWhiteSpace(identifier) ? throw new ArgumentNullException(nameof(identifier)) : identifier;
         SecretHash = secretHash ?? throw new ArgumentNullException(nameof(secretHash));
         Salt = salt ?? throw new ArgumentNullException(nameof(salt));
     }
