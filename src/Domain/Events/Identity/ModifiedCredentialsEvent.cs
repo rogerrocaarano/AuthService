@@ -1,6 +1,6 @@
 using DDDSharp.Abstractions.Domain;
 
-namespace Domain.Events;
+namespace Domain.Events.Identity;
 
 public class ModifiedCredentialsEvent : DomainEvent
 {

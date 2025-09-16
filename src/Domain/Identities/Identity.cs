@@ -1,6 +1,7 @@
 using DDDSharp.Abstractions.Domain;
 using Domain.ValueObjects;
 using Domain.Events;
+using Domain.Events.Identity;
 
 namespace Domain.Identities;
 
